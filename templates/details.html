@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block details %}{% endblock %}
+{% block content %}
+    {{ u }}
+    <header class="bg-primary py-3 mb-5">
+        <div class="container d-flex flex-wrap justify-content-center">
+            <a href="/" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-white text-decoration-none">
+                <span class="fs-4">OASIS MOVIES</span>
+            </a>
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0" action="/" method="get">
+                <input type="search" class="form-control" placeholder="Search..." aria-label="Search" name="search">
+            </form>
+        </div>
+    </header>
+    <div class="container">
+        <div class="card my-5">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    {% if movie.1 %}
+                        <img src="{{ movie.1 }}" class="img-fluid rounded-start" alt="{{ movie.0 }}"
+                             style="width: 100%">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='placeholders/video.svg') }}"
+                             alt="{{ movie.0 }}" style="width: 100%">
+                    {% endif %}
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ movie.0 }}</h5>
+                        <p class="p-0 my-3"><span class="bg-secondary p-2 rounded">{{ movie.2 }}</span></p>
+                        <p class="card-text">{{ movie.3 }}</p>
+                        <p class="card-text"></p>
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <p class="fw-bold"><i class="bi bi-star-fill"></i> {{ movie.4 }}</p>
+                                <p class="fw-bold"><i class="bi bi-calendar-fill"></i> {{ movie.6 }}</p>
+                            </div>
+                            <div>
+                                <p class="fw-bold"><i class="bi bi-clock-fill"></i> {{ movie.5 }}</p>
+                                <p class="fw-bold"><i class="bi bi-globe2"></i> {{ movie.7 }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            {% for index_d, download_link in download_links.items() %}
+                {% if download_link['magnet'] %}
+                    <div class="box-info p-3 border rounded mb-4">
+                        <div class="col">
+                            <h6 class="text-truncate">{{ download_link['magnet_title'] }}</h6>
+                            <div class="d-flex justify-content-between">
+                                <p class="fw-bold"><span><i
+                                        class="bi bi-file-arrow-down"></i> {{ download_link['downloads'] }}</span> |
+                                    <span><i class="bi bi-hdd-stack"></i> {{ download_link['size'] }}</span>
+                                    |
+                                    <span><i class="bi bi-arrow-up"></i> {{ download_link['seeders'] }}</span> |
+                                    <span><i class="bi bi-arrow-down"></i> {{ download_link['leechers'] }}</span> |
+                                    <span><i class="bi bi-calendar4"></i> {{ download_link['date'] }}</span></p>
+
+                                <p><a href="{{ download_link['magnet'] }}" class="btn btn-success"><i
+                                        class="bi bi-download"></i></a></p>
+                                <video width="320" height="240" controls>
+                                    <source src="{{ download_link['magnet'] }}" type="video/mp4">
+
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block home %}{% endblock %}
+{% block content %}
+    <header class="text-center text-uppercase py-3 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mx-auto">
+                    <a href="/" class="page-title">
+                        <h1 class="display-6">Oasis Movies</h1>
+                    </a>
+                    <p class="text-center lead">Search for the best movies. Oasis Movies is indexing more than 10000
+                        movies.</p>
+                </div>
+            </div>
+        </div>
+    </header>
+    <form action="/" method="get" class="mb-5">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-lg-8">
+                    <input type="text" name="search" placeholder="Type a movie title and press enter"
+                           class="form-control p-3">
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="container">
+        <div class="row row-cols-2 row-cols-lg-5 g-4 g-lg-5">
+            {% for m_index, movie in movies.items() %}
+                <div class="col">
+                    <a href="{{ url_for('details', title=movie['movie_link']) }}">
+                        {% if movie['movie_poster'] == "/placeholders/video.svg" %}
+                            <img src="{{ url_for('static', filename='placeholders/video.svg') }}"
+                                 alt="{{ movie['movie_title'] }}" style="width: 100%">
+                        {% else %}
+                            <img src="{{ movie['movie_poster'] }}" alt="{{ movie['movie_title'] }}"
+                                 style="width: 100%">
+                        {% endif %}
+                    </a>
+                    <h5 class="text-truncate text-center">{{ movie['movie_title'] }}</h5>
+                    <div class="d-flex justify-content-between">
+                        <span class="bg-info px-2 text-white">{{ movie['movie_year'] }}</span>
+                        <span class="bg-warning px-2 text-white">{{ movie['movie_rating'] }}</span>
+                    </div>
+                    <p class="fw-bold text-center">{{ movie['movie_category'] }}</p>
+                </div>
+            {% endfor %}
+        </div>
+        {{ noResults }}
+    </div>
+{% endblock %}
