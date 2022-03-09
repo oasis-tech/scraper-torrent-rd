@@ -58,14 +58,13 @@ def index():
 
 
 @app.route("/movie/<title>/")
-async def details(title):
+def details(title):
     title = title.replace('%', '/')
     site_url = f'https://solidtorrents.net/library/{title}'
     response = httpx.get(site_url)
     source = response.text
     main_details = []
     download_links = {}
-    response1 = ''
     API_TOKEN = "REAL-DEBRID-TOKEN"
     headers = {'Authorization': 'Bearer ' + API_TOKEN}
 
@@ -115,7 +114,6 @@ async def details(title):
 
             payload = {'files': 1}
             response = httpx.post("https://api.real-debrid.com/rest/1.0/torrents/selectFiles/" + torrent_id, headers=headers, data=payload)
-            pass
 
             response = httpx.get("https://api.real-debrid.com/rest/1.0/torrents/info/" + torrent_id, headers=headers)
             data = response.json()
@@ -143,7 +141,8 @@ async def details(title):
     except Exception:
         pass
 
-    return render_template("details.html", movie=main_details, download_links=download_links, u=response1)
+    return render_template("details.html", movie=main_details, download_links=download_links)
+
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
