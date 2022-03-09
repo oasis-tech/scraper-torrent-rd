@@ -8,7 +8,6 @@ app = Flask(__name__)
 @app.route("/", methods=['POST', 'GET'])
 def index():
     movie_data = {}
-    noResults = ""
     search = request.args.get("search", " ")
 
     site_url = f'https://solidtorrents.net/library?q={search}&genres=all&rating=all&year=all&type=movie&countries=all&sort=popularity'
@@ -49,12 +48,10 @@ def index():
                 }
             })
 
-            if title == "":
-                noResults = "Nothing was found"
     except Exception:
         pass
 
-    return render_template("index.html", movies=movie_data, noResults=noResults)
+    return render_template("index.html", movies=movie_data)
 
 
 @app.route("/movie/<title>/")
@@ -108,7 +105,7 @@ def details(title):
             date = leechers.find_next_sibling('div')
 
             payload = {'magnet': magnet.attrs['href']}
-            response = httpx.post("https://api.real-debrid.com/rest/1.0/torrents/addMagnet?",headers=headers, data=payload)
+            response = httpx.post("https://api.real-debrid.com/rest/1.0/torrents/addMagnet?", headers=headers, data=payload)
             data = response.json()
             torrent_id = data.get("id")
 
